@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:translationZ="1dp">
+
+        <androidx.slidingpanelayout.widget.SlidingPaneLayout
+            android:id="@+id/slidingPanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/listContainer"
+                android:layout_width="@dimen/left_side_panel_width"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:background="@android:color/black">
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/refreshLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/listTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/colorPrimaryDark"
+                            android:gravity="center"
+                            android:paddingTop="@dimen/left_side_panel_margin"
+                            android:paddingBottom="@dimen/left_side_panel_margin"
+                            android:text="@string/left_side_panel_title"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/left_side_panel_title" />
+
+                        <View
+                            android:id="@+id/line"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_below="@+id/listTitle"
+                            android:background="@android:color/darker_gray" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/postList"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@+id/line"
+                            android:layout_marginTop="2dp"
+                            android:clipToPadding="false"
+                            android:paddingBottom="70dp" />
+
+                    </RelativeLayout>
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+        </androidx.slidingpanelayout.widget.SlidingPaneLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/mainView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/guides_margin"
+        android:paddingRight="@dimen/guides_margin"
+        android:paddingLeft="@dimen/guides_margin">
+
+        <TextView
+            android:id="@+id/detailTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/left_side_panel_title"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/left_side_panel_title"/>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/example"/>
+
+        <TextView
+            android:id="@+id/detailDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/left_side_panel_title"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/left_side_panel_title"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
