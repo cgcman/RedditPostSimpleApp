@@ -7,12 +7,12 @@ import kotlinx.coroutines.withContext
 import retrofit2.adapter.rxjava2.HttpException
 import java.io.IOException
 
-class NetworkHelperImpl(private val dispatcher: DispatcherProvider = DefaultDispatcherProvider()) : NetworkHelper {
+class ErrorManagerHelperImpl(private val dispatcher: DispatcherProvider = DefaultDispatcherProvider()) : ErrorManagerHelper {
 
-    override suspend fun <T> apiCall(apiCall: suspend () -> T): ResultWrapper<T> {
+    override suspend fun <T> dataCall(dataCall: suspend () -> T): ResultWrapper<T> {
         return withContext(dispatcher.io()) {
             try {
-                ResultWrapper.Success(apiCall.invoke())
+                ResultWrapper.Success(dataCall.invoke())
             } catch (throwable: Throwable) {
                 when (throwable) {
                     is IOException -> ResultWrapper.NetworkError

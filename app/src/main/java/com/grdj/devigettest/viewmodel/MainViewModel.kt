@@ -27,20 +27,28 @@ class MainViewModel (
 
     var redditPostList = MutableLiveData<RedditPost>()
     var error = MutableLiveData<Boolean>()
+    var dataIsFetch = false
+
+    fun clearDataFetch(fetch: Boolean){
+        dataIsFetch = fetch
+    }
 
     fun getRedditPost(){
-        launch {
-            val response = repository.getRedditPost()
-            when (response) {
-                is ResultWrapper.NetworkError -> showNetworkError()
-                is ResultWrapper.GenericError -> showGenericError(response)
-                is ResultWrapper.Success -> populateUI(response.value.body())
+        if(!dataIsFetch){
+            launch {
+                val response = repository.getRedditPost()
+                when (response) {
+                    is ResultWrapper.NetworkError -> showNetworkError()
+                    is ResultWrapper.GenericError -> showGenericError(response)
+                    is ResultWrapper.Success -> populateUI(response.value.body())
+                }
             }
         }
     }
 
     private fun populateUI(response: RedditPost?){
         redditPostList.value = response
+        dataIsFetch = true
     }
 
     private fun showNetworkError(){

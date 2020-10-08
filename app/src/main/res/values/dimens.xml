@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="blue_circle">20dp</dimen>
     <dimen name="left_side_panel_width">450dp</dimen>
+    <dimen name="post_item_height">240dp</dimen>
     <dimen name="left_side_panel_width_open">510dp</dimen>
-    <dimen name="left_side_panel_title">25sp</dimen>
+    <dimen name="left_side_panel_title">22sp</dimen>
+    <dimen name="right_side_panel_title">25sp</dimen>
+    <dimen name="comments_size">20sp</dimen>
+    <dimen name="left_side_panel_description">18sp</dimen>
     <dimen name="left_side_panel_margin">20dp</dimen>
     <dimen name="guides_margin">60dp</dimen>
-
 </resources>

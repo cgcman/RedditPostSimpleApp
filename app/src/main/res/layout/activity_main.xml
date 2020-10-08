@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -23,11 +23,13 @@
                 android:layout_width="@dimen/left_side_panel_width"
                 android:layout_height="match_parent"
                 android:layout_gravity="left"
+                android:orientation="vertical"
                 android:background="@android:color/black">
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/refreshLayout"
                     android:layout_width="match_parent"
+                    android:layout_weight="1"
                     android:layout_height="match_parent">
 
                     <RelativeLayout
@@ -67,6 +69,19 @@
 
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+                <TextView
+                    android:id="@+id/dissmisAll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_gravity="bottom"
+                    android:gravity="center"
+                    android:text="@string/dissmis_all"
+                    android:paddingTop="@dimen/left_side_panel_margin"
+                    android:paddingBottom="@dimen/left_side_panel_margin"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/left_side_panel_title" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -90,26 +105,29 @@
         android:paddingLeft="@dimen/guides_margin">
 
         <TextView
-            android:id="@+id/detailTitle"
+            android:id="@+id/detailsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/left_side_panel_title"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/left_side_panel_title"/>
+            android:textStyle="bold"
+            android:textSize="@dimen/right_side_panel_title"/>
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/detailsImage"
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_gravity="center"
             android:contentDescription="@string/app_name"
+            android:layout_marginTop="@dimen/left_side_panel_margin"
             android:src="@drawable/example"/>
 
         <TextView
-            android:id="@+id/detailDescription"
+            android:id="@+id/detailsDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/left_side_panel_title"
+            android:layout_marginTop="@dimen/left_side_panel_margin"
             android:textColor="@android:color/black"
             android:textSize="@dimen/left_side_panel_title"/>
 

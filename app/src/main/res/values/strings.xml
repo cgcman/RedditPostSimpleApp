@@ -3,4 +3,9 @@
     <string name="left_side_panel_title">Reddit Posts</string>
     <string name="NOT_CONNECTED_MESSAGE">No Internet Connection</string>
     <string name="API_ERROR">An error has occurred. please try again</string>
+    <string name="dissmis_post">Dissmis Post</string>
+    <string name="item_time">%1$d %2$s ago</string>
+    <string name="item_moment">a moment ago</string>
+    <string name="comments_string">Comments</string>
+    <string name="dissmis_all">Dissmis All</string>
 </resources>
