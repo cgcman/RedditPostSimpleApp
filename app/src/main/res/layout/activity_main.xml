@@ -108,7 +108,7 @@
             android:id="@+id/detailsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/left_side_panel_title"
+            android:text=""
             android:textColor="@android:color/black"
             android:textStyle="bold"
             android:textSize="@dimen/right_side_panel_title"/>
@@ -119,14 +119,13 @@
             android:layout_height="250dp"
             android:layout_gravity="center"
             android:contentDescription="@string/app_name"
-            android:layout_marginTop="@dimen/left_side_panel_margin"
-            android:src="@drawable/example"/>
+            android:layout_marginTop="@dimen/left_side_panel_margin"/>
 
         <TextView
             android:id="@+id/detailsDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/left_side_panel_title"
+            android:text=""
             android:layout_marginTop="@dimen/left_side_panel_margin"
             android:textColor="@android:color/black"
             android:textSize="@dimen/left_side_panel_title"/>

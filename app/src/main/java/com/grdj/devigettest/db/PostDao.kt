@@ -8,8 +8,8 @@ interface PostDao {
     @Query("SELECT * FROM posts")
     suspend fun getPostList(): List<Data>
 
-    @Query("SELECT * FROM posts WHERE id = :id LIMIT 1")
-    suspend fun getPost(id: String): Data
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertPosts(posts: List<Data>)
 
     @Delete
     suspend fun deletePost(post: Data)

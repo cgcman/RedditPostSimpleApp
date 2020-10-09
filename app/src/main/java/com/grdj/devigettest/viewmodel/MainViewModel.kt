@@ -5,7 +5,8 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.grdj.devigettest.api.ResultWrapper
-import com.grdj.devigettest.domain.RedditPost
+import com.grdj.devigettest.domain.Children
+import com.grdj.devigettest.domain.children.Data
 import com.grdj.devigettest.repository.Repository
 import com.grdj.devigettest.resources.ResourcesProvider
 import kotlinx.coroutines.CoroutineScope
@@ -25,7 +26,7 @@ class MainViewModel (
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-    var redditPostList = MutableLiveData<RedditPost>()
+    var redditPostList = MutableLiveData<List<Children>>()
     var error = MutableLiveData<Boolean>()
     var dataIsFetch = false
 
@@ -40,15 +41,25 @@ class MainViewModel (
                 when (response) {
                     is ResultWrapper.NetworkError -> showNetworkError()
                     is ResultWrapper.GenericError -> showGenericError(response)
-                    is ResultWrapper.Success -> populateUI(response.value.body())
+                    is ResultWrapper.Success -> {
+                        populateUI(response.value)
+                    }
                 }
             }
         }
     }
 
-    private fun populateUI(response: RedditPost?){
-        redditPostList.value = response
-        dataIsFetch = true
+    fun deletePost(){
+
+    }
+
+    private fun populateUI(response: List<Children>?){
+        if(response?.size!! < 1 ){
+            showGenericError("Empty List")
+        } else {
+            redditPostList.value = response
+            dataIsFetch = true
+        }
     }
 
     private fun showNetworkError(){
@@ -62,4 +73,6 @@ class MainViewModel (
         Toast.makeText(getApplication(), resourcesProvider.getApiError(), Toast.LENGTH_SHORT).show()
         Timber.d("RESPONSE, $response")
     }
+
+    fun CurrentItemInMemory(child : Children = Children("",Data("","","",0,"",0))) : Children = child
 }

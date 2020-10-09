@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity(), PostItemClickListener {
                 }
             }
         }
+        showDetails(viewModel.CurrentItemInMemory())
     }
 
     private fun initViews(){
@@ -86,10 +87,16 @@ class MainActivity : AppCompatActivity(), PostItemClickListener {
         viewModel.getRedditPost()
         viewModel.redditPostList.observe(this, Observer { list ->
             list.let {
-                adpt.setItems(list.data.children as ArrayList)
+                adpt.setItems(list as ArrayList<Children>)
                 adpt.notifyDataSetChanged()
                 refreshLayout!!.isRefreshing = false
                 listTitle.visibility = View.VISIBLE
+            }
+        })
+
+        viewModel.error.observe(this, Observer {
+            if(it){
+                refreshLayout!!.isRefreshing = false
             }
         })
     }
@@ -127,5 +134,6 @@ class MainActivity : AppCompatActivity(), PostItemClickListener {
 
         detailsTitle.text = post.data.author
         detailsDescription.text = post.data.title
+        viewModel.CurrentItemInMemory(post)
     }
 }
