@@ -1,7 +1,6 @@
 package com.grdj.devigettest.viewmodel
 
 import android.app.Application
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.grdj.devigettest.api.ResultWrapper
@@ -28,6 +27,7 @@ class MainViewModel (
 
     var redditPostList = MutableLiveData<List<Children>>()
     var error = MutableLiveData<Boolean>()
+    var message = MutableLiveData<String>()
     var dataIsFetch = false
     var lastSaveData = MutableLiveData<Children>()
 
@@ -42,6 +42,7 @@ class MainViewModel (
                     is ResultWrapper.GenericError -> showGenericError(response)
                     is ResultWrapper.Success -> {
                         populateUI(response.value)
+                        persistData(response.value!!.get(0))
                     }
                 }
             }
@@ -50,9 +51,10 @@ class MainViewModel (
 
     fun deletePost(data : Data){
         launch {
-            val response = repository.deleteReddit(data)
+            val response = repository.deletePost(data)
             when (response) {
                 is ResultWrapper.GenericError -> showDeleteDBError(response)
+                is ResultWrapper.Success -> showDeleteDBSuccess()
             }
         }
     }
@@ -64,20 +66,24 @@ class MainViewModel (
 
     fun showNetworkError(){
         error.value = true
-        Toast.makeText(getApplication(), resourcesProvider.getApiError(), Toast.LENGTH_SHORT).show()
+        message.value = resourcesProvider.getApiError()
         Timber.d("RESPONSE, NETWORK ERROR")
     }
 
     fun showGenericError(response: Any?) {
         error.value = true
-        Toast.makeText(getApplication(), resourcesProvider.getApiError(), Toast.LENGTH_SHORT).show()
+        message.value = resourcesProvider.getApiError()
         Timber.d("RESPONSE, $response")
     }
 
     fun showDeleteDBError(response: Any?) {
         error.value = true
-        Toast.makeText(getApplication(), resourcesProvider.getDeleteDBErrorr(), Toast.LENGTH_SHORT).show()
+        resourcesProvider.getDeleteDBErrorr()
         Timber.d("RESPONSE, $response")
+    }
+
+    fun showDeleteDBSuccess() {
+        message.value = resourcesProvider.getDeleteDBSuccess()
     }
 
     fun persistData(post: Children){

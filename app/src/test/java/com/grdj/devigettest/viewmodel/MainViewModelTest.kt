@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.grdj.devigettest.CoroutineTestRule
 import com.grdj.devigettest.api.ResultWrapper
 import com.grdj.devigettest.domain.Children
+import com.grdj.devigettest.domain.children.Data
 import com.grdj.devigettest.repository.Repository
 import com.grdj.devigettest.resources.ResourcesProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -80,6 +81,28 @@ class MainViewModelTest{
         SUT.getRedditPost()
         verify(SUT, times(1)).populateUI(mockList)
         assertEquals(data.getValue(), expected)
+    }
+
+    @Test
+    fun `when delete a Post from repository and return Error then show a Generic Error`() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        val SUT = spy(getMainViewModel())
+        val result = ResultWrapper.GenericError(999)
+        val mockData = Data("","","",1,"",1)
+        val data = MutableLiveData<Boolean>()
+        `when`(repository.deletePost(mockData)).thenReturn(result)
+        SUT.deletePost(mockData)
+        data.value = false
+        verify(SUT, times(1)).showDeleteDBError(result)
+    }
+
+    @Test
+    fun `when delete a Post from repository and return Success then show a Success Toast`() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        val SUT = spy(getMainViewModel())
+        val result = ResultWrapper.Success(true)
+        val mockData = Data("","","",1,"",1)
+        `when`(repository.deletePost(mockData)).thenReturn(result)
+        SUT.deletePost(mockData)
+        verify(SUT, times(1)).showDeleteDBSuccess()
     }
 
     fun getMainViewModel() : MainViewModel {

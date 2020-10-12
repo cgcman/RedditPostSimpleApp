@@ -80,7 +80,7 @@ class PostItemAdapter (private val listener: PostItemClickListener) : RecyclerVi
                 .into(itemView.thumb)
 
             itemView.title.text = post.data.author
-            itemView.time.text = convertToDate(res, post.data.created.toLong())
+            itemView.time.text = convertToTimeAgo(res, post.data.created.toLong())
             itemView.descrption.text = post.data.title
             itemView.comments.text = "${post.data.num_comments} ${res.getString(R.string.comments_string)}"
 
@@ -91,40 +91,6 @@ class PostItemAdapter (private val listener: PostItemClickListener) : RecyclerVi
             itemView.dissmisGroup.setAllOnClickListener(View.OnClickListener {
                 listener.onDeleteClicked(adapterPosition)
             })
-        }
-
-        private fun convertToDate(res: Resources, itemTime: Long): String {
-
-            val currentMillis = System.currentTimeMillis()
-            val itemMillis = TimeUnit.SECONDS.toMillis(itemTime)
-            val diffTime = currentMillis - itemMillis
-
-            if (itemTime > SIXTY) {
-                val timeInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffTime)
-                if (timeInMinutes > SIXTY) {
-                    val timeInHours = TimeUnit.MILLISECONDS.toHours(diffTime)
-                    if (timeInHours > A_DAY_IN_HOURS) {
-                        val timeInDays = TimeUnit.MILLISECONDS.toDays(diffTime)
-                        if (timeInDays > A_MONTH) {
-                            val timeInMonths = timeInDays / A_MONTH
-                            if (timeInMonths > A_YEAR) {
-                                val timeInYears = timeInMonths / A_YEAR
-                                return res.getString(R.string.item_time, timeInYears, YEARS)
-                            } else {
-                                return res.getString(R.string.item_time, timeInMonths, MONTHS)
-                            }
-                        } else {
-                            return res.getString(R.string.item_time, timeInDays, DAYS)
-                        }
-                    } else {
-                        return res.getString(R.string.item_time, timeInHours, HOURS)
-                    }
-                } else {
-                    return res.getString(R.string.item_time, timeInMinutes, MINUTES)
-                }
-            } else {
-                return res.getString(R.string.item_moment)
-            }
         }
     }
 }

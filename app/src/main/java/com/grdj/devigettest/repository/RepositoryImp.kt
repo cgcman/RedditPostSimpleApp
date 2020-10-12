@@ -54,13 +54,13 @@ class RepositoryImp(
         }
     }
 
-    suspend fun insertAll(post: ArrayList<Data>) : ResultWrapper<Unit> {
+    suspend fun insertAll(post: ArrayList<Data>) : ResultWrapper<Any> {
         return errorManagerHelper.dataCall() {
             postDao.insertPosts(post)
         }
     }
 
-    override suspend fun deleteReddit(data: Data) : ResultWrapper<Unit> {
+    override suspend fun deletePost(data: Data) : ResultWrapper<Any> {
         return errorManagerHelper.dataCall() {
             try {
                 postDao.deletePost(data)

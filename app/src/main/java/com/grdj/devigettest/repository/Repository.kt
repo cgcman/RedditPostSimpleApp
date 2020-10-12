@@ -8,5 +8,5 @@ import retrofit2.Response
 
 interface Repository {
     suspend fun getRedditPost(): ResultWrapper<List<Children>?>
-    suspend fun deleteReddit(data: Data): ResultWrapper<Unit>
+    suspend fun deletePost(data: Data): ResultWrapper<Any>
 }

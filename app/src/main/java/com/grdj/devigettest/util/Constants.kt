@@ -1,6 +1,7 @@
 package com.grdj.devigettest.util
 
 object Constants {
+    const val EMPTY_STRING = ""
     const val ZERO = 0
     const val SIXTY = 60
     const val A_MONTH = 30

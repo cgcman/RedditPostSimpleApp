@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.grdj.devigettest.R
 import com.grdj.devigettest.domain.Children
 import com.grdj.devigettest.util.Constants.CLOSE
+import com.grdj.devigettest.util.Constants.EMPTY_STRING
 import com.grdj.devigettest.util.Constants.OPEN
 import com.grdj.devigettest.util.Constants.ZERO
 import com.grdj.devigettest.viewmodel.MainViewModel
@@ -124,7 +126,6 @@ class MainActivity : AppCompatActivity(), PostItemClickListener {
                 adpt.notifyDataSetChanged()
                 refreshLayout!!.isRefreshing = false
                 listTitle.visibility = View.VISIBLE
-                viewModel.persistData(adpt.getItem(ZERO))
             }
         })
 
@@ -136,6 +137,10 @@ class MainActivity : AppCompatActivity(), PostItemClickListener {
 
         viewModel.lastSaveData.observe(this, Observer {
             showDetails(it)
+        })
+
+        viewModel.message.observe(this, Observer {
+            showMessages(it)
         })
     }
 
@@ -172,5 +177,12 @@ class MainActivity : AppCompatActivity(), PostItemClickListener {
 
         detailsTitle.text = post.data.author
         detailsDescription.text = post.data.title
+    }
+
+    private fun showMessages(message: String){
+        if(!message.length.equals(ZERO)){
+            Toast.makeText(getApplication(), message, Toast.LENGTH_SHORT).show()
+            viewModel.message.value = EMPTY_STRING
+        }
     }
 }
