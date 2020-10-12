@@ -8,6 +8,7 @@ import com.grdj.devigettest.domain.Children
 import com.grdj.devigettest.domain.children.Data
 import com.grdj.devigettest.repository.Repository
 import com.grdj.devigettest.resources.ResourcesProvider
+import com.grdj.devigettest.util.Constants.ZERO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -42,7 +43,6 @@ class MainViewModel (
                     is ResultWrapper.GenericError -> showGenericError(response)
                     is ResultWrapper.Success -> {
                         populateUI(response.value)
-                        persistData(response.value!!.get(0))
                     }
                 }
             }
@@ -62,6 +62,9 @@ class MainViewModel (
     fun populateUI(response: List<Children>?){
         redditPostList.value = response
         dataIsFetch = true
+        if(!response!!.size.equals(ZERO)){
+            persistData(response.get(0))
+        }
     }
 
     fun showNetworkError(){

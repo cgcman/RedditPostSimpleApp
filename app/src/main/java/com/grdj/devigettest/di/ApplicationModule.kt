@@ -1,7 +1,5 @@
 package com.grdj.devigettest.di
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.room.Room
 import com.grdj.devigettest.api.ErrorManagerHelper
 import com.grdj.devigettest.api.ErrorManagerHelperImpl
 import com.grdj.devigettest.api.RedditApiService

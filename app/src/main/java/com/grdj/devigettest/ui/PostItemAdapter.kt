@@ -1,27 +1,15 @@
 package com.grdj.devigettest.ui
 
 import android.content.res.Resources
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.grdj.devigettest.R
 import com.grdj.devigettest.domain.Children
-import com.grdj.devigettest.util.Constants.A_DAY_IN_HOURS
-import com.grdj.devigettest.util.Constants.A_MONTH
-import com.grdj.devigettest.util.Constants.A_YEAR
-import com.grdj.devigettest.util.Constants.DAYS
-import com.grdj.devigettest.util.Constants.HOURS
-import com.grdj.devigettest.util.Constants.MINUTES
-import com.grdj.devigettest.util.Constants.MONTHS
-import com.grdj.devigettest.util.Constants.SIXTY
-import com.grdj.devigettest.util.Constants.YEARS
 import kotlinx.android.synthetic.main.post_item.view.*
-import java.util.concurrent.TimeUnit
 
 class PostItemAdapter (private val listener: PostItemClickListener) : RecyclerView.Adapter<PostItemAdapter.MyViewHolder>() {
 
