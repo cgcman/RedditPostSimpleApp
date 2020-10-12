@@ -13,15 +13,22 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.grdj.devigettest.R
 import com.grdj.devigettest.domain.Children
+import com.grdj.devigettest.util.Constants.CLOSE
+import com.grdj.devigettest.util.Constants.OPEN
+import com.grdj.devigettest.util.Constants.ZERO
 import com.grdj.devigettest.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.post_item.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), PostItemClickListener {
     val viewModel: MainViewModel by viewModel()
 
     lateinit var adpt: PostItemAdapter
-    var paddingDp: Int = 0
+    var paddingLeft: Int = 0
+    var paddingRight: Int = 0
+    var isAnimationOver = true
+    var animationState = OPEN
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,23 +38,26 @@ class MainActivity : AppCompatActivity(), PostItemClickListener {
     }
 
     override fun onResume() {
-        paddingDp = applicationContext.getResources()
+        paddingLeft = applicationContext.getResources()
             .getDimension(R.dimen.left_side_panel_width_open).toInt()
+        paddingRight = applicationContext.getResources()
+            .getDimension(R.dimen.guides_margin).toInt()
         super.onResume()
         when(getResources().getConfiguration().orientation){
             Configuration.ORIENTATION_LANDSCAPE -> {
                 mainView.let {
-                    mainView.setPadding(paddingDp, 0, 0, 0);
+                    mainView.setPadding(paddingLeft, 0, paddingRight, 0);
                     slidingPanel.openPane()
+                    animationState = OPEN
                 }
             }
             Configuration.ORIENTATION_PORTRAIT -> {
                 mainView.let {
                     slidingPanel.closePane()
+                    animationState = CLOSE
                 }
             }
         }
-        showDetails(viewModel.CurrentItemInMemory())
     }
 
     private fun initViews(){
@@ -59,7 +69,7 @@ class MainActivity : AppCompatActivity(), PostItemClickListener {
         refreshLayout.setOnRefreshListener {
             listTitle.visibility = View.GONE
             adpt.clearItems()
-            viewModel.clearDataFetch(false)
+            viewModel.dataIsFetch = false
             fetchData()
         }
         refreshLayout!!.isRefreshing = true
@@ -69,16 +79,39 @@ class MainActivity : AppCompatActivity(), PostItemClickListener {
         }
 
         slidingPanel.setPanelSlideListener(object : SlidingPaneLayout.PanelSlideListener {
-            override fun onPanelSlide(panel: View, slideOffset: Float) {}
+            override fun onPanelSlide(panel: View, slideOffset: Float) {
+                when(animationState){
+                    CLOSE -> {
+                        if(isAnimationOver){
+                            val anim = AnimationUtils.loadAnimation(
+                                applicationContext,
+                                R.anim.translate_right
+                            )
+                            listContainer.startAnimation(anim)
+                            isAnimationOver = false
+                        }
+                    }
+                    else -> {
+                        if(isAnimationOver){
+                            val anim = AnimationUtils.loadAnimation(
+                                applicationContext,
+                                R.anim.translate_left
+                            )
+                            listContainer.startAnimation(anim)
+                            isAnimationOver = false
+                        }
+                    }
+                }
+            }
             override fun onPanelOpened(panel: View) {
-                paddingDp = applicationContext.getResources()
-                    .getDimension(R.dimen.left_side_panel_width_open).toInt()
-                mainView.setPadding(paddingDp, 0, 0, 0);
+                mainView.setPadding(paddingLeft, 0, paddingRight, 0);
+                animationState = OPEN
+                isAnimationOver = true
             }
             override fun onPanelClosed(panel: View) {
-                paddingDp = applicationContext.getResources()
-                    .getDimension(R.dimen.guides_margin).toInt()
-                mainView.setPadding(paddingDp, 0, 0, 0);
+                mainView.setPadding(paddingRight, 0, paddingRight, 0);
+                animationState = CLOSE
+                isAnimationOver = true
             }
         })
     }
@@ -91,6 +124,7 @@ class MainActivity : AppCompatActivity(), PostItemClickListener {
                 adpt.notifyDataSetChanged()
                 refreshLayout!!.isRefreshing = false
                 listTitle.visibility = View.VISIBLE
+                viewModel.persistData(adpt.getItem(ZERO))
             }
         })
 
@@ -99,10 +133,16 @@ class MainActivity : AppCompatActivity(), PostItemClickListener {
                 refreshLayout!!.isRefreshing = false
             }
         })
+
+        viewModel.lastSaveData.observe(this, Observer {
+            showDetails(it)
+        })
     }
 
     override fun onPostClicked(position: Int) {
-        showDetails(adpt.getItem(position))
+        val itemView = postList!!.findViewHolderForAdapterPosition(position)!!.itemView
+        itemView.visited.visibility = View.GONE
+        viewModel.persistData(adpt.getItem(position))
     }
 
     override fun onDeleteClicked(position: Int) {
@@ -114,9 +154,7 @@ class MainActivity : AppCompatActivity(), PostItemClickListener {
         itemView.startAnimation(anim)
 
         Handler().postDelayed({
-            //val redditToDelete = posts[position]
-            //val task = Runnable { redditDB.redditDAO().deleteReddit(redditToDelete) }
-            //excecutor.postTask(task)
+            viewModel.deletePost(adpt.getItem(position).data)
             adpt.removeItem(position)
             adpt.notifyDataSetChanged()
         }, anim.duration)
@@ -134,6 +172,5 @@ class MainActivity : AppCompatActivity(), PostItemClickListener {
 
         detailsTitle.text = post.data.author
         detailsDescription.text = post.data.title
-        viewModel.CurrentItemInMemory(post)
     }
 }

@@ -81,6 +81,7 @@ class PostItemAdapter (private val listener: PostItemClickListener) : RecyclerVi
 
             itemView.title.text = post.data.author
             itemView.time.text = convertToDate(res, post.data.created.toLong())
+            itemView.descrption.text = post.data.title
             itemView.comments.text = "${post.data.num_comments} ${res.getString(R.string.comments_string)}"
 
             itemView.clickGroup.setAllOnClickListener(View.OnClickListener {

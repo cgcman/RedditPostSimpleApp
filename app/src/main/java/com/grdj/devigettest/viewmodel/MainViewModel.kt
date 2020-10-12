@@ -29,13 +29,12 @@ class MainViewModel (
     var redditPostList = MutableLiveData<List<Children>>()
     var error = MutableLiveData<Boolean>()
     var dataIsFetch = false
+    var lastSaveData = MutableLiveData<Children>()
 
-    fun clearDataFetch(fetch: Boolean){
-        dataIsFetch = fetch
-    }
+    fun isDataFetch() : Boolean = dataIsFetch
 
     fun getRedditPost(){
-        if(!dataIsFetch){
+        if(!isDataFetch()){
             launch {
                 val response = repository.getRedditPost()
                 when (response) {
@@ -49,30 +48,39 @@ class MainViewModel (
         }
     }
 
-    fun deletePost(){
-
-    }
-
-    private fun populateUI(response: List<Children>?){
-        if(response?.size!! < 1 ){
-            showGenericError("Empty List")
-        } else {
-            redditPostList.value = response
-            dataIsFetch = true
+    fun deletePost(data : Data){
+        launch {
+            val response = repository.deleteReddit(data)
+            when (response) {
+                is ResultWrapper.GenericError -> showDeleteDBError(response)
+            }
         }
     }
 
-    private fun showNetworkError(){
+    fun populateUI(response: List<Children>?){
+        redditPostList.value = response
+        dataIsFetch = true
+    }
+
+    fun showNetworkError(){
         error.value = true
         Toast.makeText(getApplication(), resourcesProvider.getApiError(), Toast.LENGTH_SHORT).show()
         Timber.d("RESPONSE, NETWORK ERROR")
     }
 
-    private fun showGenericError(response: Any?) {
+    fun showGenericError(response: Any?) {
         error.value = true
         Toast.makeText(getApplication(), resourcesProvider.getApiError(), Toast.LENGTH_SHORT).show()
         Timber.d("RESPONSE, $response")
     }
 
-    fun CurrentItemInMemory(child : Children = Children("",Data("","","",0,"",0))) : Children = child
+    fun showDeleteDBError(response: Any?) {
+        error.value = true
+        Toast.makeText(getApplication(), resourcesProvider.getDeleteDBErrorr(), Toast.LENGTH_SHORT).show()
+        Timber.d("RESPONSE, $response")
+    }
+
+    fun persistData(post: Children){
+        lastSaveData.value = post
+    }
 }

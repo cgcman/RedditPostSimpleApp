@@ -46,7 +46,11 @@ class RepositoryImp(
 
     suspend fun getPostListFromDb() : ResultWrapper<List<Children>> {
         return errorManagerHelper.dataCall() {
-            mapDB()
+            val response = mapDB()
+            when (response.size) {
+                0 -> throw Exception("DB is Empty")
+                else -> response
+            }
         }
     }
 
@@ -56,11 +60,17 @@ class RepositoryImp(
         }
     }
 
-    suspend fun deleteReddit(data: Data) {
-        postDao.deletePost(data)
+    override suspend fun deleteReddit(data: Data) : ResultWrapper<Unit> {
+        return errorManagerHelper.dataCall() {
+            try {
+                postDao.deletePost(data)
+            } catch (error: Exception){
+                throw Exception("DB ierror: "+error)
+            }
+        }
     }
 
-    private suspend fun mapDB() : List<Children>{
+    suspend fun mapDB() : List<Children>{
         val childrens = ArrayList<Children>(arrayListOf())
         for (child in postDao.getPostList()) {
             val children = Children("", child)

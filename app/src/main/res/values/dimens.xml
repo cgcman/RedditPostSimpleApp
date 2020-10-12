@@ -10,4 +10,5 @@
     <dimen name="left_side_panel_description">18sp</dimen>
     <dimen name="left_side_panel_margin">20dp</dimen>
     <dimen name="guides_margin">60dp</dimen>
+    <dimen name="item_title_max_width">220dp</dimen>
 </resources>

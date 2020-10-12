@@ -1,5 +1,6 @@
 package com.grdj.devigettest.di
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.room.Room
 import com.grdj.devigettest.api.ErrorManagerHelper
 import com.grdj.devigettest.api.ErrorManagerHelperImpl
@@ -21,7 +22,7 @@ val appModule = module{
     single { ResourcesProviderImpl(get()) as ResourcesProvider }
     single { NetworkManagerImpl(get()) as NetworkManager }
     single { RepositoryImp(
-        RedditApiService(ErrorManagerHelperImpl()),
+        RedditApiService(ErrorManagerHelperImpl(), ResourcesProviderImpl(get())),
         NetworkManagerImpl(get()),
         get<PostDB>().postDao(),
         ErrorManagerHelperImpl()
@@ -29,7 +30,7 @@ val appModule = module{
     single {PostDB.getInstance(get())}
     single { get<PostDB>().postDao() }
     viewModel { MainViewModel(get(), RepositoryImp(
-        RedditApiService(ErrorManagerHelperImpl()),
+        RedditApiService(ErrorManagerHelperImpl(), ResourcesProviderImpl(get())),
         NetworkManagerImpl(get()),
         get<PostDB>().postDao(),
         ErrorManagerHelperImpl()),
