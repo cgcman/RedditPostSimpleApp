@@ -7,6 +7,7 @@
 Koin Dependency injection<br>
 MVVM architecture<br>
 Android Jetpack LiveData<br>
+Room for Data persist
 Retrofit 2<br>
 Corutines<br>
 Glide<br>
