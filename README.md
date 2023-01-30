@@ -1,8 +1,8 @@
-# Deviget Test - Reddit Posts App
+# Reddit Latest Posts App
 
 ### Test application that shows last post from Reddit.
 [![Visit Website](https://raw.githubusercontent.com/cgcman/devigetTest/master/app/src/main/assets/screen.png)](https://github.com/cgcman/devigetTest)
-<br><br>Code Challenge for Deviget Test - Reddit Posts App.<br><br>
+<br><br>Reddit Posts App.<br><br>
 #### Master branch Use:<br>
 Koin Dependency injection<br>
 MVVM architecture<br>
